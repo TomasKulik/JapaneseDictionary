@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
       title: 'Japanese Dictionary',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.orange,
       ),
       home: SearchScreen(),
     );
