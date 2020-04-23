@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:japanese_dictionary/models/translation_model.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -12,20 +13,29 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _isLoading = true;
 
-  var words;
+  List<Translation> _translations;
 
   _fetchData(String find) async {
     final url = 'https://jisho.org/api/v1/search/words?keyword=$find';
-    final response = await http.get(url);
+    _translations = [];
 
-    if (response.statusCode == 200) {
-      final map = json.decode(response.body);
-      final wordsJson = map['data'];
+    try {
+      final response = await http.get(url);
 
-      setState(() {
-        words = wordsJson;
-        _isLoading = false;
-      });
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(response.body);
+        List<dynamic> translationList = data['data'];
+
+        translationList.forEach(
+          (json) => _translations.add(Translation.fromJson(json)),
+        );
+
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      throw (e);
     }
   }
 
@@ -67,15 +77,15 @@ class _SearchScreenState extends State<SearchScreen> {
         child: _isLoading
             ? CircularProgressIndicator()
             : ListView.builder(
-                itemCount: words != null ? words.length : 0,
+                itemCount: _translations.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final translation = _translations[index];
                   return ListTile(
-                    title: words[index]['japanese'][0]['word'] == ''
-                        ? Text(words[index]['japanese'][0]['word'])
-                        : Text(words[index]['japanese'][0]['reading']),
-                    subtitle: Text(words[index]['japanese'][0]['reading']),
-                    trailing: Text(
-                        words[index]['senses'][0]['english_definitions'][0]),
+                    title: translation.word == ''
+                        ? Text(translation.word)
+                        : Text(translation.reading),
+                    subtitle: Text(translation.reading),
+                    trailing: Text(translation.english),
                   );
                 },
               ),
