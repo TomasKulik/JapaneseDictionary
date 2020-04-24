@@ -81,11 +81,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   final translation = _translations[index];
                   return ListTile(
-                    title: translation.word == ''
-                        ? Text(translation.word)
-                        : Text(translation.reading),
-                    subtitle: Text(translation.reading),
-                    trailing: Text(translation.english),
+                    title: translation.word == null
+                        ? Text(translation.reading)
+                        : Text(translation.word +
+                            '  (' +
+                            translation.reading +
+                            ')'),
+                    subtitle: Text(translation.english.toString()),
                   );
                 },
               ),
