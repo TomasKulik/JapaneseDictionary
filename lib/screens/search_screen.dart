@@ -77,6 +77,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: _isLoading
             ? CircularProgressIndicator()
             : ListView.builder(
+                physics: BouncingScrollPhysics(),
                 itemCount: _translations.length,
                 itemBuilder: (BuildContext context, int index) {
                   final translation = _translations[index];
@@ -88,6 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             translation.reading +
                             ')'),
                     subtitle: Text(translation.english.toString()),
+                    onTap: () {},
                   );
                 },
               ),
