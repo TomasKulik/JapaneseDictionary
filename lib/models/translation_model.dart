@@ -20,7 +20,7 @@ class Translation {
     map['id'] = id;
     map['word'] = word;
     map['reading'] = reading;
-    // map['english'] = english;
+    map['english'] = english.toString();
 
     return map;
   }
@@ -30,7 +30,7 @@ class Translation {
       id: map['id'],
       word: map['word'],
       reading: map['reading'],
-      // english: map['english'],
+      english: map['english'].split(','),
     );
   }
 }

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:japanese_dictionary/helpers/database_helper.dart';
 import 'package:japanese_dictionary/models/translation_model.dart';
+import 'package:japanese_dictionary/screens/saved_translations_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -72,6 +74,17 @@ class _SearchScreenState extends State<SearchScreen> {
             _fetchData(input);
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save_alt),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => SavedTranslationsScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: _isLoading
@@ -89,7 +102,9 @@ class _SearchScreenState extends State<SearchScreen> {
                             translation.reading +
                             ')'),
                     subtitle: Text(translation.english.toString()),
-                    onTap: () {},
+                    onTap: () {
+                      DatabaseHelper.instance.insertTranslation(translation);
+                    },
                   );
                 },
               ),
