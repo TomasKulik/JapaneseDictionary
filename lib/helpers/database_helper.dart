@@ -15,6 +15,8 @@ class DatabaseHelper {
   String colWord = 'word';
   String colReading = 'reading';
   String colEnglish = 'english';
+  String colIsCommon = 'isCommon';
+  String colJLPTLevel = 'jlptLevel';
 
   Future<Database> get db async {
     if (_db == null) {
@@ -33,7 +35,7 @@ class DatabaseHelper {
 
   void _createDb(Database db, int version) async {
     await db.execute(
-      'CREATE TABLE $translationTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colWord TEXT, $colReading TEXT, $colEnglish TEXT)',
+      'CREATE TABLE $translationTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colWord TEXT, $colReading TEXT, $colEnglish TEXT, $colIsCommon TEXT,$colJLPTLevel TEXT)',
     );
   }
 
@@ -50,7 +52,6 @@ class DatabaseHelper {
     translationMapList.forEach((translationMap) {
       translationList.add(Translation.fromMap(translationMap));
     });
-    // taskList.sort((taskA, taskB) => taskA.date.compareTo(taskB.date));
     return translationList;
   }
 
@@ -59,17 +60,6 @@ class DatabaseHelper {
     final int result = await db.insert(translationTable, translation.toMap());
     return result;
   }
-
-  // Future<int> updateTranslation(Translation translation) async {
-  //   Database db = await this.db;
-  //   final int result = await db.update(
-  //     translationTable,
-  //     translation.toMap(),
-  //     where: '$colId = ?',
-  //     whereArgs: [translation.id],
-  //   );
-  //   return result;
-  // }
 
   Future<int> deleteTranslation(int id) async {
     Database db = await this.db;

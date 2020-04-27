@@ -41,6 +41,25 @@ class _SavedTranslationsScreenState extends State<SavedTranslationsScreen> {
                     : Text(
                         translation.word + '  (' + translation.reading + ')'),
                 subtitle: Text(translation.english.toString()),
+                trailing: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    translation.jlptLevel.isNotEmpty
+                        ? Text(
+                            translation.jlptLevel[0],
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          )
+                        : SizedBox.shrink(),
+                    translation.isCommon.contains('true')
+                        ? Text(
+                            'Common',
+                            style: TextStyle(color: Colors.green),
+                          )
+                        : SizedBox.shrink(),
+                  ],
+                ),
                 onTap: () {
                   print(translation.id);
                   DatabaseHelper.instance.deleteTranslation(translation.id);

@@ -86,29 +86,46 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: _isLoading
-            ? CircularProgressIndicator()
-            : ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: _translations.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final translation = _translations[index];
-                  return ListTile(
-                    title: translation.word == null
-                        ? Text(translation.reading)
-                        : Text(translation.word +
-                            '  (' +
-                            translation.reading +
-                            ')'),
-                    subtitle: Text(translation.english.toString()),
-                    onTap: () {
-                      DatabaseHelper.instance.insertTranslation(translation);
-                    },
-                  );
-                },
-              ),
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemCount: _translations.length,
+              itemBuilder: (BuildContext context, int index) {
+                final translation = _translations[index];
+                return ListTile(
+                  title: translation.word == null
+                      ? Text(translation.reading)
+                      : Text(
+                          translation.word + '  (' + translation.reading + ')'),
+                  subtitle: Text(translation.english.toString()),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      translation.jlptLevel.isNotEmpty
+                          ? Text(
+                              translation.jlptLevel[0],
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            )
+                          : SizedBox.shrink(),
+                      translation.isCommon.contains('true')
+                          ? Text(
+                              'Common',
+                              style: TextStyle(color: Colors.green),
+                            )
+                          : SizedBox.shrink(),
+                    ],
+                  ),
+                  onTap: () {
+                    DatabaseHelper.instance.insertTranslation(translation);
+                  },
+                );
+              },
+            ),
     );
   }
 }
