@@ -104,9 +104,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   trailing: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      translation.jlptLevel.isNotEmpty
+                      translation.jlptLevel.contains('jlpt')
                           ? Text(
-                              translation.jlptLevel[0],
+                              translation.jlptLevel,
                               style: TextStyle(
                                 color: Colors.red,
                               ),

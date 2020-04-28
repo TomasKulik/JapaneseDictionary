@@ -2,9 +2,9 @@ class Translation {
   int id;
   String word;
   String reading;
-  List<dynamic> english = [];
+  String english;
   String isCommon;
-  List<dynamic> jlptLevel;
+  String jlptLevel;
 
   Translation({
     this.word,
@@ -23,14 +23,13 @@ class Translation {
   });
 
   factory Translation.fromJson(Map<String, dynamic> json) {
-    // print(int.parse(json['is_common']));
     print(json['is_common']);
     return Translation(
       word: json['japanese'][0]['word'] as String,
       reading: json['japanese'][0]['reading'] as String,
-      english: json['senses'][0]['english_definitions'] as List<dynamic>,
+      english: json['senses'][0]['english_definitions'].toString(),
       isCommon: json['is_common'].toString(),
-      jlptLevel: json['jlpt'] as List<dynamic>,
+      jlptLevel: json['jlpt'].toString(),
     );
   }
 
@@ -51,9 +50,9 @@ class Translation {
       id: map['id'],
       word: map['word'],
       reading: map['reading'],
-      english: map['english'].split(','),
+      english: map['english'],
       isCommon: map['isCommon'],
-      jlptLevel: map['jlptLevel'].split(','),
+      jlptLevel: map['jlptLevel'],
     );
   }
 }
