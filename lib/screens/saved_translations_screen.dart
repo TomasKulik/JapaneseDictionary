@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:japanese_dictionary/helpers/database_helper.dart';
 import 'package:japanese_dictionary/models/translation_model.dart';
+import 'package:japanese_dictionary/widgets/jlpt_level.dart';
 
 class SavedTranslationsScreen extends StatefulWidget {
   @override
@@ -43,14 +44,10 @@ class _SavedTranslationsScreenState extends State<SavedTranslationsScreen> {
                 subtitle: Text(translation.english.toString()),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     translation.jlptLevel.contains('jlpt')
-                        ? Text(
-                            translation.jlptLevel,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          )
+                        ? JLPTLevel(jlpt: translation.jlptLevel)
                         : SizedBox.shrink(),
                     translation.isCommon.contains('true')
                         ? Text(
